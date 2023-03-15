@@ -32,7 +32,7 @@ trainer = DocumentGroundedDialogRetrievalTrainer(
     eval_dataset=fr_train_dataset,
     all_passages=all_passages)
 trainer.train(
-    batch_size=128,
+    batch_size=16,
     total_epoches=50,
 )
 trainer.evaluate(
