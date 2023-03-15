@@ -11,22 +11,25 @@ fr_train_dataset = MsDataset.load(
     'DAMO_ConvAI/FrDoc2BotRetrieval',
     download_mode=DownloadMode.FORCE_REDOWNLOAD)
 
-vi_train_dataset = MsDataset.load(
-    'DAMO_ConvAI/ViDoc2BotRetrieval',
-    download_mode=DownloadMode.FORCE_REDOWNLOAD)
+# vi_train_dataset = MsDataset.load(
+#     'DAMO_ConvAI/ViDoc2BotRetrieval',
+#     download_mode=DownloadMode.FORCE_REDOWNLOAD)
 
-train_dataset = [x for dataset in [fr_train_dataset, vi_train_dataset] for x in dataset]
+#train_dataset = [x for dataset in [fr_train_dataset, vi_train_dataset] for x in dataset]
 
 all_passages = []
-for file_name in ['fr', 'vi']:
-    with open(f'all_passages/{file_name}.json') as f:
-        all_passages += json.load(f)
+# for file_name in ['fr', 'vi']:
+#     with open(f'all_passages/{file_name}.json') as f:
+#         all_passages += json.load(f)
+
+with open('all_passages/fr.json') as f:
+    all_passages += json.load(f)
 
 cache_path = snapshot_download('DAMO_ConvAI/nlp_convai_retrieval_pretrain', cache_dir='./')
 trainer = DocumentGroundedDialogRetrievalTrainer(
     model=cache_path,
-    train_dataset=train_dataset,
-    eval_dataset=train_dataset,
+    train_dataset=fr_train_dataset,
+    eval_dataset=fr_train_dataset,
     all_passages=all_passages)
 trainer.train(
     batch_size=128,
